@@ -1,0 +1,30 @@
+* jsonl.el 
+** Introduction
+Utility functions for working with line-delimited JSON.  Also known as "JSON Lines", this is a format for storing multiple JSON values (one per line) within a file.  It is a useful format for logging structured data.
+
+Read about JSONL:
+ - [[http://jsonlines.org/][JSON Lines]]
+ - [[https://en.wikipedia.org/wiki/JSON_streaming#Line-delimited_JSON][JSON streaming - Wikipedia]]
+
+** Usage
+
+Use `jsonl-append-value` to log an arbitrary JSON value:
+
+#+begin_src emacs-lisp
+(jsonl-append-value "~/logging.jsonl" `((hostname . ,(s-trim (shell-command-to-string "hostname")))
+                                        (current_value . 42)
+                                        (other_data . ((list . [10 20 30])
+                                                       (note . "just a note")))
+                                        (timestamp . ,(format-time-string "%Y-%m-%dT%T"))))
+#+end_src
+
+Will append the following value to `loggin.jsonl`:
+
+#+begin_src json
+{"hostname":"devbox","current_value":42,"other_data":{"list":[10,20,30],"note":"just a note"},"timestamp":"2019-04-07T23:13:15"}
+#+end_src
+
+** Alternatives / Related Projects
+ - [[https://www.elastic.co/guide/en/logstash/current/plugins-codecs-json_lines.html][Json_lines codec plugin | Logstash Reference {6.7} | Elastic]]
+ - [[https://github.com/maxogden/ndjson][GitHub - maxogden/ndjson: streaming line delimited json parser + serializer]]
+ - [[https://github.com/timkuijsten/node-ld-jsonstream#readme][GitHub - timkuijsten/node-ld-jsonstream: Simple and secure line delimited JSON stream parser]]
