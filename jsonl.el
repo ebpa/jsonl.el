@@ -3,7 +3,10 @@
 ;; Copyright (C) 2019  Erik Anderson
 
 ;; Author: Erik Anderson <erik@ebpa.link>
+;; Homepage: https://github.com/ebpa/jsonl.el
 ;; Keywords: tools
+;; Package-Requires: ((emacs "25"))
+;; Version: 0.0.1
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -20,13 +23,20 @@
 
 ;;; Commentary:
 
-;; 
+;;  This library contains some utility functions to simplify working
+;;  with line-delimited JSON (JSONL).  Sometimes called
+;;  "newline-delimited JSON" or "JSON lines", line-delimited JSON is a
+;;  format for encoding multiple JSON values within a single file:
+;;
+;;  > {foo: "bar"}
+;;  > {baz: "bat"}
 
 ;;; Code:
 
 (require 'json)
 
-(defvar jsonl-line-separator "\n" "JSON delimiter to use (\\n or \\r\\n).")
+(defvar jsonl-line-separator "\n"
+  "JSON delimiter to use (\\n or \\r\\n).")
 
 (defun jsonl-append-value (file value)
   "Append JSON VALUE to FILE.  Encoding is done by `json-encode'."
@@ -50,7 +60,7 @@
     (insert str)
     (goto-char (point-min))
     (cl-loop while t
-             for json = (condition-case err
+             for json = (condition-case nil
                               (json-read)
                            (error nil))
              until (not json)
@@ -63,7 +73,7 @@
     (goto-char (point-min))
     (cl-loop while t
              for i from 0
-             for json = (condition-case err
+             for json = (condition-case nil
                               (json-read)
                            (error 'EOF))
              until (or (eq json 'EOF)
@@ -73,4 +83,6 @@
                       json))))
 
 (provide 'jsonl)
+
 ;;; jsonl.el ends here
+
