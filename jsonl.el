@@ -36,7 +36,7 @@
 (require 'json)
 
 (defvar jsonl-line-separator "\n"
-  "JSON delimiter to use (\\n or \\r\\n).")
+  "JSON delimiter (generally ``\\n'' or ``\\r\\n'') to use when writing and appending.  Must contain ``\\n'' to remain valid JSONL.  ``\\r\\n'' may be used to cater to Windows systems as whitespace is ignored when reading.")
 
 (defun jsonl-append-value (file value)
   "Append JSON VALUE to FILE.  Encoding is done by `json-encode'."
